@@ -16,8 +16,6 @@ def get_name(request):
 	if request.method == 'POST':
 		
 		form = NameForm(request.POST)
-
-		return render(request, 'main_app/limit.html', {})
 	
 		if form.is_valid():
 
@@ -101,11 +99,15 @@ def main(summoner_name):
 
 		if spells[par["spell1Id"]] == "Ignite":
 			spell1 = "Dot"
+		elif spells[par["spell1Id"]] == "Ghost":
+			spell1 = "Haste"
 		else:
 			spell1 = spells[par["spell1Id"]]
 
 		if spells[par["spell2Id"]] == "Ignite":
 			spell2 = "Dot"
+		elif spells[par["spell2Id"]] == "Ghost":
+			spell2 = "Haste"
 		else:
 			spell2 = spells[par["spell2Id"]]
 
