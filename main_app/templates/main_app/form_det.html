@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 50%;
+    padding: 10px;
+    height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+</style>
+</head>
+
+<body>
+
+<h2>League of Legends Game Tracker</h2>
+<h2>Mode: {{MODE}} - Type: {{TYPE}} - Config: {{CONFIG}}
+
+<div class="row">
+  <div class="column" style="background-color:#aaa;">
+    <h2>Team 1</h2>
+    <p>
+    	
+	{% if TEAM1 %}
+    <ul>
+    	{% for member in TEAM1 %}
+        	<li>{{member.NAME}} - {{member.CHAMP}} - <img src="https://ddragon.leagueoflegends.com/cdn/7.10.1/img/spell/Summoner{{member.SPELL1}}.png" width="20" height="20"><img src="https://ddragon.leagueoflegends.com/cdn/7.10.1/img/spell/Summoner{{member.SPELL2}}.png" width="30" height="30"> </li>
+    	{% endfor %}
+    </ul>
+	{% else %}
+    	<p>No team is available.</p>
+	{% endif %}
+
+
+    </p>
+  </div>
+
+
+  <div class="column" style="background-color:#bbb;">
+    <h2>Team 2</h2>
+    <p>
+    
+    {% if TEAM2 %}
+    <ul>
+    	{% for member in TEAM2 %}
+        	<li>{{member.NAME}} - {{member.CHAMP}} - <img src="https://ddragon.leagueoflegends.com/cdn/7.10.1/img/spell/Summoner{{member.SPELL1}}.png" width="20" height="20"><img src="https://ddragon.leagueoflegends.com/cdn/7.10.1/img/spell/Summoner{{member.SPELL2}}.png" width="30" height="30"> </li>
+    	{% endfor %}
+    </ul>
+	{% else %}
+    	<p>No team is available.</p>
+	{% endif %}
+
+
+    </p>
+  </div>
+</div>
+
+</body>
+
+</html>
