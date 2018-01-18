@@ -16,6 +16,8 @@ def get_name(request):
 	if request.method == 'POST':
 		
 		form = NameForm(request.POST)
+
+		return render(request, 'main_app/limit.html', {})
 	
 		if form.is_valid():
 
@@ -28,9 +30,9 @@ def get_name(request):
 
 			return HttpResponse(template.render(data, request))
 	else:
-		form = NameForm()
 
-	return render(request, 'main_app/detail.html', {'form':form})
+		form = NameForm()
+		return render(request, 'main_app/detail.html', {'form':form})
 
 
 def getData(url):
@@ -125,12 +127,6 @@ def main(summoner_name):
 	game_data_dic["TEAM2"] = team2
 
 	return game_data_dic
-
-
-
-
-
-
 
 
 
