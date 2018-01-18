@@ -69,9 +69,11 @@ def returnRankedInfo(summonerId):
 	ranked_info = getData(STARTER + "lol/league/v3/positions/by-summoner/" + str(summonerId) + KEY_PHRASE)
 
 	for queue in json.loads(ranked_info):
-		return_string += game_dict[queue["queueType"]] + " " + queue["tier"] + " " + queue["rank"] + " (" + str(queue["leaguePoints"]) + " LP) " + str(queue["wins"]) + "-" + str(queue["losses"]) + "\n"
 
-	return return_string
+		if game_dict[queue["queueType"]] == "Solo/Duo":
+			return {"TIER": queue["tier"], "RANK": queue["rank"], "LP": queue["leaguePoints"], "WINS": queue["wins"], "LOSSES": queue["losses"]}
+
+	return None
 
 def main(summoner_name):
 
@@ -106,7 +108,9 @@ def main(summoner_name):
 			spell2 = spells[par["spell2Id"]]
 
 
-		summoner = {"NAME": par["summonerName"], "CHAMP": champions[par["championId"]], "SPELL1": spell1, "SPELL2": spell2}
+		ranked_data = returnRankedInfo(par["summonerId"])
+
+		summoner = {"NAME": par["summonerName"], "CHAMP": champions[par["championId"]], "SPELL1": spell1, "SPELL2": spell2, "RANKED": ranked_data}
 
 		if(count <= 5):
 			team2.append(summoner)
@@ -115,7 +119,7 @@ def main(summoner_name):
 
 		count+=1
 
-		#returnRankedInfo(par["summonerId"])
+
 
 	game_data_dic["TEAM1"] = team1
 	game_data_dic["TEAM2"] = team2

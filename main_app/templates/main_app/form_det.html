@@ -16,7 +16,7 @@ body {
     float: left;
     width: 50%;
     padding: 10px;
-    height: 300px; /* Should be removed. Only for demonstration */
+    height: 600px; /* Should be removed. Only for demonstration */
 }
 
 /* Clear floats after the columns */
@@ -39,11 +39,18 @@ body {
     <p>
     	
 	{% if TEAM1 %}
-    <ul>
+
+<ol>
     	{% for member in TEAM1 %}
-        	<li>{{member.NAME}} - {{member.CHAMP}} - <img src="https://ddragon.leagueoflegends.com/cdn/7.10.1/img/spell/Summoner{{member.SPELL1}}.png" width="20" height="20"><img src="https://ddragon.leagueoflegends.com/cdn/7.10.1/img/spell/Summoner{{member.SPELL2}}.png" width="30" height="30"> </li>
+        	<li>{{member.NAME}} - {{member.CHAMP}} - <img src="https://ddragon.leagueoflegends.com/cdn/7.10.1/img/spell/Summoner{{member.SPELL1}}.png" width="30" height="30"><img src="https://ddragon.leagueoflegends.com/cdn/7.10.1/img/spell/Summoner{{member.SPELL2}}.png" width="30" height="30"> </li>
+
+       	<ul>
+    		<li>{{member.RANKED.TIER}} {{member.RANKED.RANK}}           LP:{{member.RANKED.LP}}    {{member.RANKED.WINS}}-{{member.RANKED.LOSSES}}</li>
+
+    	</ul>
     	{% endfor %}
-    </ul>
+</ol>
+
 	{% else %}
     	<p>No team is available.</p>
 	{% endif %}
@@ -58,11 +65,17 @@ body {
     <p>
     
     {% if TEAM2 %}
-    <ul>
+ 
+<ol>
     	{% for member in TEAM2 %}
-        	<li>{{member.NAME}} - {{member.CHAMP}} - <img src="https://ddragon.leagueoflegends.com/cdn/7.10.1/img/spell/Summoner{{member.SPELL1}}.png" width="20" height="20"><img src="https://ddragon.leagueoflegends.com/cdn/7.10.1/img/spell/Summoner{{member.SPELL2}}.png" width="30" height="30"> </li>
+        	<li>{{member.NAME}} - {{member.CHAMP}} - <img src="https://ddragon.leagueoflegends.com/cdn/7.10.1/img/spell/Summoner{{member.SPELL1}}.png" width="30" height="30"><img src="https://ddragon.leagueoflegends.com/cdn/7.10.1/img/spell/Summoner{{member.SPELL2}}.png" width="30" height="30"> </li>
+
+       	<ul>
+    		<li>{{member.RANKED.TIER}} {{member.RANKED.RANK}}           LP:{{member.RANKED.LP}}    {{member.RANKED.WINS}}-{{member.RANKED.LOSSES}}</li>
+    	</ul>
     	{% endfor %}
-    </ul>
+</ol>
+
 	{% else %}
     	<p>No team is available.</p>
 	{% endif %}
