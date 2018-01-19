@@ -28,9 +28,11 @@ def get_name(request):
 
 			data = main(form.cleaned_data['summoner_name'])
 
-			print(data)
+			if(data[0] == True):
+				return HttpResponse(loader.get_template('main_app/error.html').render({"error":data[1]}, request))
 
-			return HttpResponse(template.render(data, request))
+			else:
+				return HttpResponse(template.render(data[1], request))
 	else:
 
 		form = NameForm()
@@ -47,8 +49,6 @@ def returnRankedInfo(summonerId):
 	return_string = ""
 	ranked_info = getData(STARTER + "lol/league/v3/positions/by-summoner/" + str(summonerId) + KEY_PHRASE)
 
-	print(ranked_info)
-
 	for queue in json.loads(ranked_info):
 
 		if game_dict[queue["queueType"]] == "Solo/Duo":
@@ -63,10 +63,19 @@ def main(summoner_name):
 
 	banned_champs = []
 
-	url = STARTER + "lol/summoner/v3/summoners/by-name/" + summoner_name + KEY_PHRASE
-	data = getData(url)
-	dic = json.loads(data)
-	game_data = json.loads(getData(STARTER + "lol/spectator/v3/active-games/by-summoner/" + str(dic["id"]) + KEY_PHRASE))
+	user = json.loads(getData(STARTER + "lol/summoner/v3/summoners/by-name/" + summoner_name + KEY_PHRASE))
+
+	if checkIfErrorCodesAreTrue(user)[0]:
+		return checkIfErrorCodesAreTrue(user)
+
+	print(user)
+
+	game_data = json.loads(getData(STARTER + "lol/spectator/v3/active-games/by-summoner/" + str(user["id"]) + KEY_PHRASE))
+
+	if checkIfErrorCodesAreTrue(game_data)[0]:
+		return checkIfErrorCodesAreTrue(game_data)
+
+	print(game_data)
 
 	game_data_dic = {"MODE": game_data["gameMode"], "TYPE": game_data["gameType"], "CONFIG": game_modes[game_data["gameQueueConfigId"]]}
 
@@ -96,7 +105,30 @@ def main(summoner_name):
 	game_data_dic["TEAM2"] = team2
 	game_data_dic["BANNED"] = banned_champs
 
-	return game_data_dic
+	return (False, game_data_dic)
+
+def checkIfErrorCodesAreTrue(game_data):
+
+	if "status" not in game_data:
+		return (False, "")
+
+	elif game_data["status"]["status_code"] == 400:
+		return (True, "Bad Request")
+
+	elif game_data["status"]["status_code"] == 403:
+		return (True, "Access Forbidden")
+
+	elif game_data["status"]["status_code"] == 404:
+		return (True, "User not in a game or can't be found")
+
+	elif game_data["status"]["status_code"] == 429:
+		return (True, "Rate limit exceeded")
+
+	else:
+		return (False, "")
+
+
+
 
 
 
