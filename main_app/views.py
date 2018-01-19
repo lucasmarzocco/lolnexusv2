@@ -6,10 +6,11 @@ from django.template import loader
 import requests
 import json
 
-KEY_PHRASE = "?api_key=RGAPI-dd25a015-e140-4f33-8551-385d62e85808"
+KEY_PHRASE = "?api_key=RGAPI-9409948e-b9b5-4253-8fd7-5506e4c0f2bd"
 STARTER = "https://na1.api.riotgames.com/"
 game_dict = {"RANKED_SOLO_5x5": "Solo/Duo", "RANKED_FLEX_SR": "Flex SR", "RANKED_FLEX_TT": "Flex TT"}
 game_modes = {400: "5v5 Draft", 420: "5v5 Ranked Solo/Duo", 430: "5v5 Blind", 440: "5v5 Ranked Flex", 450: "5v5 ARAM"}
+summoner_spells = {"FLASH":"FLASH", "IGNITE":"DOT", "GHOST":"HASTE","CLEANSE":"BOOST", "TELEPORT": "TELEPORT", "SMITE": "SMITE", "EXHAUST":"EXHAUST"}
 
 def get_name(request):
 
@@ -77,8 +78,12 @@ def returnRankedInfo(summonerId):
 
 def main(summoner_name):
 
+	global summoner_spells
+
 	spells = spellSetUp()
 	champions = championSetUp()
+
+	banned_champs = []
 
 	url = STARTER + "lol/summoner/v3/summoners/by-name/" + summoner_name + KEY_PHRASE
 	data = getData(url)
@@ -86,6 +91,13 @@ def main(summoner_name):
 	game_data = json.loads(getData(STARTER + "lol/spectator/v3/active-games/by-summoner/" + str(dic["id"]) + KEY_PHRASE))
 
 	game_data_dic = {"MODE": game_data["gameMode"], "TYPE": game_data["gameType"], "CONFIG": game_modes[game_data["gameQueueConfigId"]]}
+
+	for banned_champ in game_data["bannedChampions"]:
+		champ = champions[banned_champ["championId"]]
+		if champ == "Kha'Zix":
+			banned_champs.append("Khazix")
+		else:
+			banned_champs.append(champ)
 
 	team1 = []
 	team2 = []
@@ -97,24 +109,10 @@ def main(summoner_name):
 		spell1 = ""
 		spell2 = ""
 
-		if spells[par["spell1Id"]] == "Ignite":
-			spell1 = "Dot"
-		elif spells[par["spell1Id"]] == "Ghost":
-			spell1 = "Haste"
-		else:
-			spell1 = spells[par["spell1Id"]]
-
-		if spells[par["spell2Id"]] == "Ignite":
-			spell2 = "Dot"
-		elif spells[par["spell2Id"]] == "Ghost":
-			spell2 = "Haste"
-		else:
-			spell2 = spells[par["spell2Id"]]
-
 
 		ranked_data = returnRankedInfo(par["summonerId"])
 
-		summoner = {"NAME": par["summonerName"], "CHAMP": champions[par["championId"]], "SPELL1": spell1, "SPELL2": spell2, "RANKED": ranked_data}
+		summoner = {"NAME": par["summonerName"], "CHAMP": champions[par["championId"]], "SPELL1": summoner_spells[spell1], "SPELL2": summoner_spells[spell2], "RANKED": ranked_data}
 
 		if(count <= 5):
 			team2.append(summoner)
@@ -124,9 +122,9 @@ def main(summoner_name):
 		count+=1
 
 
-
 	game_data_dic["TEAM1"] = team1
 	game_data_dic["TEAM2"] = team2
+	game_data_dic["BANNED"] = banned_champs
 
 	return game_data_dic
 
