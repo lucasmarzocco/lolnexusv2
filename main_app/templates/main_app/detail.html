@@ -1,6 +1,14 @@
+<html>
 <head>
     <title>League of Legends Game Tracker</title>
 </head>
+
+<style>
+* {
+    text-align: center;
+}
+
+</style>
 
 <!-- Header -->
 <header>
@@ -16,9 +24,23 @@
     </div>
 </header>
 
-
+<body>
+<img src ="https://games.openmandriva.org/wp-content/uploads/2015/05/hc6k-Custom.png">
 <form action="/main_app/summoner_name/" method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Submit"/>
 </form>
+</body>
+
+
+
+<footer>
+
+	League of Legends Game Tracker is in no way sponsored or afilitated with Riot Games. All information on this site
+	comes from the Riot Games API.
+
+	<br>Lucas Marzocco © 2018
+
+</footer>
+</html>

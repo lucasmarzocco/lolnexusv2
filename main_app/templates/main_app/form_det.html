@@ -30,17 +30,21 @@ body {
 
 <body>
 
-<h2>League of Legends Game Tracker</h2>
-<h2>Mode: {{MODE}} - Type: {{TYPE}} - Config: {{CONFIG}}
+<h2 align="center"> League of Legends Game Tracker</h2>
+<h2 align="center"> Mode: {{MODE}} - Type: {{TYPE}} - Config: {{CONFIG}}
 
-    <form action="/main_app/" method="get">
-    <input type="submit" value="Game Over" />
-
+            <br>
             Banned Champions:
             {% for champ in BANNED %}
-            <img src="https://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/{{champ}}" width="30" height="30">
+            <img align="center" src="https://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/{{champ}}" width="30" height="30">
             {% endfor %}
+
+            <br>
+            <form action="/main_app/" method="get">
+            <input type="submit" value="Game Over" />
 </form>
+</h2>
+
 
 <div class="row">
   <div class="column" style="background-color:#aaa;">
