@@ -38,7 +38,7 @@ body {
 
             Banned Champions:
             {% for champ in BANNED %}
-            <img src="https://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/{{champ}}.png" width="30" height="30">
+            <img src="https://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/{{champ}}" width="30" height="30">
             {% endfor %}
 </form>
 
@@ -51,7 +51,7 @@ body {
 
 <ol>
     	{% for member in TEAM1 %}
-        	<li>{{member.NAME}} - {{member.CHAMP}} - <img src="https://ddragon.leagueoflegends.com/cdn/8.1.1/img/spell/Summoner{{member.SPELL1}}.png" width="30" height="30"><img src="https://ddragon.leagueoflegends.com/cdn/7.10.1/img/spell/Summoner{{member.SPELL2}}.png" width="30" height="30"> </li>
+        	<li>{{member.NAME}} - {{member.CHAMP}} - <img src="https://ddragon.leagueoflegends.com/cdn/8.1.1/img/spell/{{member.SPELL1}}" width="20" height="20"><img src="https://ddragon.leagueoflegends.com/cdn/8.1.1/img/spell/{{member.SPELL2}}" width="20" height="20"> </li>
 
        	<ul>
     		<li>{{member.RANKED.TIER}} {{member.RANKED.RANK}}           LP:{{member.RANKED.LP}}    {{member.RANKED.WINS}}-{{member.RANKED.LOSSES}}</li>
@@ -77,7 +77,7 @@ body {
  
 <ol>
     	{% for member in TEAM2 %}
-        	<li>{{member.NAME}} - {{member.CHAMP}} - <img src="https://ddragon.leagueoflegends.com/cdn/8.1.1/img/spell/Summoner{{member.SPELL1}}.png" width="30" height="30"><img src="https://ddragon.leagueoflegends.com/cdn/7.10.1/img/spell/Summoner{{member.SPELL2}}.png" width="30" height="30"> </li>
+        	<li>{{member.NAME}} - {{member.CHAMP}} - <img src="https://ddragon.leagueoflegends.com/cdn/8.1.1/img/spell/{{member.SPELL1}}" width="20" height="20"><img src="https://ddragon.leagueoflegends.com/cdn/8.1.1/img/spell/{{member.SPELL2}}" width="20" height="20"> </li>
 
        	<ul>
     		<li>{{member.RANKED.TIER}} {{member.RANKED.RANK}}           LP:{{member.RANKED.LP}}    {{member.RANKED.WINS}}-{{member.RANKED.LOSSES}}</li>

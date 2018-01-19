@@ -3,9 +3,9 @@ import requests
 
 champion_dict = {}
 
-def extractInfoFromFile():
+def extractChampsFromFile():
 
-	file = json.load(open("cached_champs.txt", "r"))
+	file = json.load(open("/Users/lmarzocc/Desktop/lolnexus/main_app/cached_champs.txt", "r"))
 
 	for item in file["keys"]:
 
@@ -14,7 +14,7 @@ def extractInfoFromFile():
 		champ_name = rephrase[item] #champ name
 		image_full = file["data"][rephrase[item]]["image"]["full"]
 
-		champion_dict[champ_id] = (champ_name, image_full)
+		champion_dict[int(champ_id)] = (champ_name, image_full)
 
 	return champion_dict
 
@@ -25,4 +25,4 @@ def extractInfoFromFile():
 	file.write(content)
 '''
 
-extractInfoFromFile()
+extractChampsFromFile()

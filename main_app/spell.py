@@ -3,9 +3,9 @@ import requests
 
 spell_dict = {}
 
-def extractInfoFromFile():
+def extractSpellsFromFile():
 
-	file = json.load(open("cached_spells.txt", "r"))
+	file = json.load(open("/Users/lmarzocc/Desktop/lolnexus/main_app/cached_spells.txt", "r"))
 
 	for item in file["data"]:
 
@@ -14,7 +14,7 @@ def extractInfoFromFile():
 		spell_name = rephrase[item]["name"]
 		image_full = rephrase[item]["image"]["full"]
 
-		spell_dict[spell_id] = (spell_name, image_full)
+		spell_dict[int(spell_id)] = (spell_name, image_full)
 
 	return spell_dict
 
@@ -25,4 +25,4 @@ def extractInfoFromFile():
 	file.write(content)
 '''
 
-extractInfoFromFile()
+extractSpellsFromFile()
