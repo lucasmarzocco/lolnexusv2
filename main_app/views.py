@@ -10,7 +10,7 @@ import os
 from .champion import extractChampsFromFile
 from .spell import extractSpellsFromFile
 
-KEY_PHRASE = "?api_key=RGAPI-718bdc21-2ff6-4678-9d8a-81a2cc0eed83"
+KEY_PHRASE = "?api_key=RGAPI-8474662d-2897-4667-bc81-93e8e80f4000"
 STARTER = "https://na1.api.riotgames.com/"
 game_dict = {"RANKED_SOLO_5x5": "Solo/Duo", "RANKED_FLEX_SR": "Flex SR", "RANKED_FLEX_TT": "Flex TT"}
 game_modes = {400: "5v5 Draft", 420: "5v5 Ranked Solo/Duo", 430: "5v5 Blind", 440: "5v5 Ranked Flex", 450: "5v5 ARAM"}
@@ -56,6 +56,52 @@ def returnRankedInfo(summonerId):
 
 	return None
 
+def getAccountID(summonerId):
+
+	summoner_info = json.loads(getData(STARTER + "lol/summoner/v3/summoners/" + str(summonerId) + KEY_PHRASE))
+	return summoner_info["accountId"]
+
+
+def returnLastGame(summonerId, champs):
+
+	match_game_info = json.loads(getData(STARTER + "lol/match/v3/matchlists/by-account/" + str(getAccountID(summonerId)) + "/recent" + KEY_PHRASE))
+
+	last_match = match_game_info["matches"][0]
+	lane = last_match["lane"]
+	champ_id = last_match["champion"]
+	queue = last_match["queue"]
+	game_id = last_match["gameId"]
+
+	last_match_info = json.loads(getData(STARTER + "lol/match/v3/matches/" + str(game_id) + KEY_PHRASE))
+
+	position = 0
+	won = ""
+
+	for participant in last_match_info["participantIdentities"]:
+		if getAccountID(summonerId) == participant["player"]["accountId"]:
+			position = participant["participantId"]
+
+
+	for part in last_match_info["participants"]:
+
+		if position == part["participantId"]:
+
+			win = part["stats"]["win"]
+			kills = part["stats"]["kills"]
+			deaths = part["stats"]["deaths"]
+			assists = part["stats"]["assists"]
+
+			if win:
+				won = "WON"
+			else:
+				won = "LOST"
+			
+			print(lane, champs[champ_id][1], game_modes[queue], won, kills, deaths, assists)
+			return {"LANE": lane, "CHAMP": champs[champ_id][1], "QUEUE": game_modes[queue], "WON": won, "KILLS": kills, "DEATHS": deaths, "ASSISTS": assists}
+
+	return None
+
+
 def main(summoner_name):
 
 	spells = extractSpellsFromFile()
@@ -68,14 +114,10 @@ def main(summoner_name):
 	if checkIfErrorCodesAreTrue(user)[0]:
 		return checkIfErrorCodesAreTrue(user)
 
-	print(user)
-
 	game_data = json.loads(getData(STARTER + "lol/spectator/v3/active-games/by-summoner/" + str(user["id"]) + KEY_PHRASE))
 
 	if checkIfErrorCodesAreTrue(game_data)[0]:
 		return checkIfErrorCodesAreTrue(game_data)
-
-	print(game_data)
 
 	game_data_dic = {"MODE": game_data["gameMode"], "TYPE": game_data["gameType"], "CONFIG": game_modes[game_data["gameQueueConfigId"]]}
 
@@ -90,8 +132,9 @@ def main(summoner_name):
 	for par in game_data["participants"]:
 
 		ranked_data = returnRankedInfo(par["summonerId"])
+		last_game = returnLastGame(par["summonerId"], champions)
 
-		summoner = {"NAME": par["summonerName"], "CHAMP": champions[par["championId"]][0], "SPELL1": (spells[par["spell1Id"]])[1], "SPELL2": (spells[par["spell2Id"]])[1], "RANKED": ranked_data}
+		summoner = {"NAME": par["summonerName"], "CHAMP": champions[par["championId"]][0], "SPELL1": (spells[par["spell1Id"]])[1], "SPELL2": (spells[par["spell2Id"]])[1], "RANKED": ranked_data, "LAST": last_game}
 
 		if(count <= 5):
 			team2.append(summoner)
@@ -106,6 +149,7 @@ def main(summoner_name):
 	game_data_dic["BANNED"] = banned_champs
 
 	return (False, game_data_dic)
+	
 
 def checkIfErrorCodesAreTrue(game_data):
 
