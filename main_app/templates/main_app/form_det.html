@@ -16,7 +16,7 @@ body {
     float: left;
     width: 50%;
     padding: 10px;
-    height: 600px; /* Should be removed. Only for demonstration */
+    height: 750px; /* Should be removed. Only for demonstration */
 }
 
 /* Clear floats after the columns */
@@ -62,7 +62,7 @@ body {
        	<ul>
 
     		<li>{{member.RANKED.TIER}} {{member.RANKED.RANK}}           LP:{{member.RANKED.LP}}    {{member.RANKED.WINS}}-{{member.RANKED.LOSSES}}</li>
-            <li>Last Game: {{member.LAST.WON}} with <img src="https://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/{{member.LAST.CHAMP}}" width="30" height="30">
+            <li>Last Game: {{member.LAST.WON}} with <img src="https://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/{{member.LAST.CHAMP}}" width="30" height="30"> ({{member.LAST.LANE}}): {{member.LAST.KILLS}}/{{member.LAST.DEATHS}}/{{member.LAST.ASSISTS}}
 
     	</ul>
     	{% endfor %}
@@ -89,6 +89,8 @@ body {
 
        	<ul>
     		<li>{{member.RANKED.TIER}} {{member.RANKED.RANK}}           LP:{{member.RANKED.LP}}    {{member.RANKED.WINS}}-{{member.RANKED.LOSSES}}</li>
+            <li>Last Game: {{member.LAST.WON}} with <img src="https://ddragon.leagueoflegends.com/cdn/8.1.1/img/champion/{{member.LAST.CHAMP}}" width="30" height="30"> ({{member.LAST.LANE}}): {{member.LAST.KILLS}}/{{member.LAST.DEATHS}}/{{member.LAST.ASSISTS}}
+                
     	</ul>
     	{% endfor %}
 </ol>

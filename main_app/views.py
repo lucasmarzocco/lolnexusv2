@@ -6,11 +6,12 @@ from django.template import loader
 import requests
 import json
 import sys
+import time
 import os
 from .champion import extractChampsFromFile
 from .spell import extractSpellsFromFile
 
-KEY_PHRASE = "?api_key=RGAPI-8474662d-2897-4667-bc81-93e8e80f4000"
+KEY_PHRASE = "?api_key=RGAPI-84a19084-f611-4a78-bfda-6969d2c13835"
 STARTER = "https://na1.api.riotgames.com/"
 game_dict = {"RANKED_SOLO_5x5": "Solo/Duo", "RANKED_FLEX_SR": "Flex SR", "RANKED_FLEX_TT": "Flex TT"}
 game_modes = {400: "5v5 Draft", 420: "5v5 Ranked Solo/Duo", 430: "5v5 Blind", 440: "5v5 Ranked Flex", 450: "5v5 ARAM"}
@@ -40,6 +41,7 @@ def get_name(request):
 
 
 def getData(url):
+	time.sleep(1.2)
 	content = requests.get(url).content
 	return content
 
@@ -96,7 +98,6 @@ def returnLastGame(summonerId, champs):
 			else:
 				won = "LOST"
 			
-			print(lane, champs[champ_id][1], game_modes[queue], won, kills, deaths, assists)
 			return {"LANE": lane, "CHAMP": champs[champ_id][1], "QUEUE": game_modes[queue], "WON": won, "KILLS": kills, "DEATHS": deaths, "ASSISTS": assists}
 
 	return None
@@ -170,9 +171,5 @@ def checkIfErrorCodesAreTrue(game_data):
 
 	else:
 		return (False, "")
-
-
-
-
 
 
