@@ -1,7 +1,8 @@
 import requests
 import json
+from keys import return_key
 
-KEY_PHRASE = "?api_key=RGAPI-dd25a015-e140-4f33-8551-385d62e85808"
+KEY_PHRASE = "?api_key=" + return_key()
 STARTER = "https://na1.api.riotgames.com/"
 champ_dict = {}
 spell_dict = {}
@@ -85,34 +86,3 @@ def main():
 
 
 main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-	
-
-
-
-
-
-
-
-
-
-

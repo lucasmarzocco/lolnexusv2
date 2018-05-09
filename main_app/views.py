@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import NameForm
 from django.template import loader
-
 import requests
 import json
 import sys
@@ -10,8 +9,10 @@ import time
 import os
 from .champion import extractChampsFromFile
 from .spell import extractSpellsFromFile
+from .keys import return_key
 
-KEY_PHRASE = "?api_key=RGAPI-84a19084-f611-4a78-bfda-6969d2c13835"
+KEY_PHRASE = "?api_key=" + return_key()
+#versions = https://ddragon.leagueoflegends.com/api/versions.json
 STARTER = "https://na1.api.riotgames.com/"
 game_dict = {"RANKED_SOLO_5x5": "Solo/Duo", "RANKED_FLEX_SR": "Flex SR", "RANKED_FLEX_TT": "Flex TT"}
 game_modes = {400: "5v5 Draft", 420: "5v5 Ranked Solo/Duo", 430: "5v5 Blind", 440: "5v5 Ranked Flex", 450: "5v5 ARAM"}
@@ -41,13 +42,13 @@ def get_name(request):
 
 
 def getData(url):
+
 	time.sleep(1.2)
 	content = requests.get(url).content
 	return content
 
 
 def returnRankedInfo(summonerId):
-
 	return_string = ""
 	ranked_info = getData(STARTER + "lol/league/v3/positions/by-summoner/" + str(summonerId) + KEY_PHRASE)
 
@@ -56,7 +57,7 @@ def returnRankedInfo(summonerId):
 		if game_dict[queue["queueType"]] == "Solo/Duo":
 			return {"TIER": queue["tier"], "RANK": queue["rank"], "LP": queue["leaguePoints"], "WINS": queue["wins"], "LOSSES": queue["losses"]}
 
-	return None
+	return "Unranked"
 
 def getAccountID(summonerId):
 
@@ -66,8 +67,7 @@ def getAccountID(summonerId):
 
 def returnLastGame(summonerId, champs):
 
-	match_game_info = json.loads(getData(STARTER + "lol/match/v3/matchlists/by-account/" + str(getAccountID(summonerId)) + "/recent" + KEY_PHRASE))
-
+	match_game_info = json.loads(getData(STARTER + "lol/match/v3/matchlists/by-account/" + str(getAccountID(summonerId)) + KEY_PHRASE))
 	last_match = match_game_info["matches"][0]
 	lane = last_match["lane"]
 	champ_id = last_match["champion"]
@@ -94,9 +94,9 @@ def returnLastGame(summonerId, champs):
 			assists = part["stats"]["assists"]
 
 			if win:
-				won = "WON"
+				won = "Won"
 			else:
-				won = "LOST"
+				won = "Lost"
 			
 			return {"LANE": lane, "CHAMP": champs[champ_id][1], "QUEUE": game_modes[queue], "WON": won, "KILLS": kills, "DEATHS": deaths, "ASSISTS": assists}
 
