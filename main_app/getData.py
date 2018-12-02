@@ -1,6 +1,7 @@
 import requests
 from keys import return_key
 
+value = "summoner-spells"
 link = "https://na1.api.riotgames.com/lol/static-data/v3/summoner-spells?locale=en_US&dataById=false&tags=all&api_key=" + return_key()
 
 #summoner-spells
