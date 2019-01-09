@@ -1,7 +1,7 @@
 import requests
 import json
 
-KEY_PHRASE = "?api_key=RGAPI-dd25a015-e140-4f33-8551-385d62e85808"
+KEY_PHRASE = "?api_key=RGAPI-f7094294-8236-4b26-a369-09089e9fcf7d"
 STARTER = "https://na1.api.riotgames.com/"
 champ_dict = {}
 spell_dict = {}
@@ -55,7 +55,6 @@ def main():
 
 	spellSetUp()
 	championSetUp()
-	#user_name = str(raw_input("What is your username?\n"))
 	url = STARTER + "lol/summoner/v3/summoners/by-name/" + sys.argv[1] + KEY_PHRASE
 	data = getData(url)
 	dic = json.loads(data)

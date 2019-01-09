@@ -11,7 +11,7 @@ import os
 from .champion import extractChampsFromFile
 from .spell import extractSpellsFromFile
 
-KEY_PHRASE = "?api_key=RGAPI-84a19084-f611-4a78-bfda-6969d2c13835"
+KEY_PHRASE = "?api_key=RGAPI-f7094294-8236-4b26-a369-09089e9fcf7d"
 STARTER = "https://na1.api.riotgames.com/"
 game_dict = {"RANKED_SOLO_5x5": "Solo/Duo", "RANKED_FLEX_SR": "Flex SR", "RANKED_FLEX_TT": "Flex TT"}
 game_modes = {400: "5v5 Draft", 420: "5v5 Ranked Solo/Duo", 430: "5v5 Blind", 440: "5v5 Ranked Flex", 450: "5v5 ARAM"}
@@ -66,13 +66,21 @@ def getAccountID(summonerId):
 
 def returnLastGame(summonerId, champs):
 
-	match_game_info = json.loads(getData(STARTER + "lol/match/v3/matchlists/by-account/" + str(getAccountID(summonerId)) + "/recent" + KEY_PHRASE))
+	print("Account ID: " + str(getAccountID(summonerId)))
+
+	print(champs)
+
+	match_game_info = json.loads(getData(STARTER + "lol/match/v3/matchlists/by-account/" + str(getAccountID(summonerId)) + KEY_PHRASE))
+
+	print(match_game_info)
 
 	last_match = match_game_info["matches"][0]
 	lane = last_match["lane"]
 	champ_id = last_match["champion"]
 	queue = last_match["queue"]
 	game_id = last_match["gameId"]
+
+	print("GAME ID: " + str(game_id))
 
 	last_match_info = json.loads(getData(STARTER + "lol/match/v3/matches/" + str(game_id) + KEY_PHRASE))
 
@@ -97,6 +105,10 @@ def returnLastGame(summonerId, champs):
 				won = "WON"
 			else:
 				won = "LOST"
+
+			print(lane)
+			print(champ_id)
+			print(queue)
 			
 			return {"LANE": lane, "CHAMP": champs[champ_id][1], "QUEUE": game_modes[queue], "WON": won, "KILLS": kills, "DEATHS": deaths, "ASSISTS": assists}
 

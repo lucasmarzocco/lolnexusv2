@@ -5,14 +5,15 @@ spell_dict = {}
 
 def extractSpellsFromFile():
 
-	file = json.load(open("/Users/lmarzocc/Desktop/lolnexus/main_app/cached_spells.txt", "r"))
+	file = json.load(open("/Users/lucasmarzocco/Desktop/lolnexusv2/main_app/cached_spells.txt", "r"))
 
 	for item in file["data"]:
 
-		rephrase = file["data"]
-		spell_id = rephrase[item]["id"]
-		spell_name = rephrase[item]["name"]
-		image_full = rephrase[item]["image"]["full"]
+		spell_name = item
+		rename = file["data"]
+		spell_data = rename[spell_name]
+		spell_id = spell_data["key"]
+		image_full = spell_data["image"]["full"]
 
 		spell_dict[int(spell_id)] = (spell_name, image_full)
 
