@@ -1,7 +1,9 @@
-To come:
+To run:
 
-1) Tilt levels: Losing streaks/winning streaks
-2) One trick? Find out if a player is a one trick with their champ
-3) Match win rate 80% or higher?
-4) Win rate on a specfic champ
-5) Dragon/baron count for jungler
+python3 manage.py runserver
+
+Go to localhost/main_app to check the actual application.
+
+Input a League of Legends summoner name that is in a game and the data will populate the screen.
+
+Waits are in place to prevent rate limiting.

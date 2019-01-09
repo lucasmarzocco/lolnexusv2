@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import NameForm
 from django.template import loader
-
 import requests
 import json
 import sys
@@ -10,6 +9,7 @@ import time
 import os
 from .champion import extractChampsFromFile
 from .spell import extractSpellsFromFile
+from .keys import return_key
 
 KEY_PHRASE = "?api_key=RGAPI-f7094294-8236-4b26-a369-09089e9fcf7d"
 STARTER = "https://na1.api.riotgames.com/"
@@ -41,13 +41,13 @@ def get_name(request):
 
 
 def getData(url):
+
 	time.sleep(1.2)
 	content = requests.get(url).content
 	return content
 
 
 def returnRankedInfo(summonerId):
-
 	return_string = ""
 	ranked_info = getData(STARTER + "lol/league/v3/positions/by-summoner/" + str(summonerId) + KEY_PHRASE)
 
@@ -56,7 +56,7 @@ def returnRankedInfo(summonerId):
 		if game_dict[queue["queueType"]] == "Solo/Duo":
 			return {"TIER": queue["tier"], "RANK": queue["rank"], "LP": queue["leaguePoints"], "WINS": queue["wins"], "LOSSES": queue["losses"]}
 
-	return None
+	return "Unranked"
 
 def getAccountID(summonerId):
 
@@ -102,13 +102,9 @@ def returnLastGame(summonerId, champs):
 			assists = part["stats"]["assists"]
 
 			if win:
-				won = "WON"
+				won = "Won"
 			else:
-				won = "LOST"
-
-			print(lane)
-			print(champ_id)
-			print(queue)
+				won = "Lost"
 			
 			return {"LANE": lane, "CHAMP": champs[champ_id][1], "QUEUE": game_modes[queue], "WON": won, "KILLS": kills, "DEATHS": deaths, "ASSISTS": assists}
 
