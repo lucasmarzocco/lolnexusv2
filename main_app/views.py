@@ -9,7 +9,6 @@ import time
 import os
 from .champion import extractChampsFromFile
 from .spell import extractSpellsFromFile
-from .keys import return_key
 
 KEY_PHRASE = "?api_key=RGAPI-f7094294-8236-4b26-a369-09089e9fcf7d"
 STARTER = "https://na1.api.riotgames.com/"
@@ -66,21 +65,13 @@ def getAccountID(summonerId):
 
 def returnLastGame(summonerId, champs):
 
-	print("Account ID: " + str(getAccountID(summonerId)))
-
-	print(champs)
-
 	match_game_info = json.loads(getData(STARTER + "lol/match/v3/matchlists/by-account/" + str(getAccountID(summonerId)) + KEY_PHRASE))
-
-	print(match_game_info)
 
 	last_match = match_game_info["matches"][0]
 	lane = last_match["lane"]
 	champ_id = last_match["champion"]
 	queue = last_match["queue"]
 	game_id = last_match["gameId"]
-
-	print("GAME ID: " + str(game_id))
 
 	last_match_info = json.loads(getData(STARTER + "lol/match/v3/matches/" + str(game_id) + KEY_PHRASE))
 
@@ -131,7 +122,8 @@ def main(summoner_name):
 	game_data_dic = {"MODE": game_data["gameMode"], "TYPE": game_data["gameType"], "CONFIG": game_modes[game_data["gameQueueConfigId"]]}
 
 	for banned_champ in game_data["bannedChampions"]:
-		banned_champs.append((champions[banned_champ["championId"]])[1])
+		if banned_champ["championId"] != (-1):
+			banned_champs.append((champions[banned_champ["championId"]])[1])
 
 	team1 = []
 	team2 = []

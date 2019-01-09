@@ -17,16 +17,6 @@ def extractChampsFromFile():
 
 		champion_dict[int(champ_id)] = (champ_name, image_full)
 
-		print(champion_dict)
-
 	return champion_dict
-
-
-	'''def getData():
-	link = "https://na1.api.riotgames.com/lol/static-data/v3/champions?locale=en_US&dataById=false&tags=all&api_key=RGAPI-f7094294-8236-4b26-a369-09089e9fcf7d"
-	content = requests.get(link).text
-	file = open("cached_champs.txt", "w")
-	file.write(content)'''
-
 
 extractChampsFromFile()
