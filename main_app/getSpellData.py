@@ -1,7 +1,7 @@
 import requests
 import json
 
-url = "http://ddragon.leagueoflegends.com/cdn/8.24.1/data/en_US/summoner.json"
+url = "http://ddragon.leagueoflegends.com/cdn/9.11.1/data/en_US/summoner.json"
 
 def getData(url):
 	file = open("cached_spells.txt", "w")
@@ -9,5 +9,9 @@ def getData(url):
 	file.write(content)
 
 getData(url)
-#current version: 8.24.1 - Jan 8 2019
+
+#current version: 9.11.1 - June 9 2019
 #champion/summoner  = champs / spells
+
+
+#https://ddragon.leagueoflegends.com/api/versions.json - CHECK THIS FOR NEW VERSIONS!!!!

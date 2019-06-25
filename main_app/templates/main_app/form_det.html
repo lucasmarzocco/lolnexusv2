@@ -37,7 +37,7 @@ body {
             <br>
             Banned Champions:
             {% for champ in BANNED %}
-            <img align="center" src="https://ddragon.leagueoflegends.com/cdn/8.24.1/img/champion/{{champ}}" width="30" height="30">
+            <img align="center" src="https://ddragon.leagueoflegends.com/cdn/9.11.1/img/champion/{{champ}}" width="30" height="30">
             {% endfor %}
 
             <br>
@@ -58,12 +58,12 @@ body {
 <ol>
     	{% for member in TEAM1 %}
         
-        	<li>{{member.NAME}} - {{member.CHAMP}} - <img src="https://ddragon.leagueoflegends.com/cdn/8.24.1/img/spell/{{member.SPELL1}}" width="30" height="30"><img src="https://ddragon.leagueoflegends.com/cdn/8.24.1/img/spell/{{member.SPELL2}}" width="30" height="30"> </li>
+        	<li>{{member.NAME}} | {{member.CHAMP}} | <img src="https://ddragon.leagueoflegends.com/cdn/8.24.1/img/spell/{{member.SPELL1}}" width="30" height="30"><img src="https://ddragon.leagueoflegends.com/cdn/9.11.1/img/spell/{{member.SPELL2}}" width="30" height="30"> </li>
 
        	<ul>
-    		<li>{{member.RANKED.TIER}} {{member.RANKED.RANK}}           LP:{{member.RANKED.LP}}    {{member.RANKED.WINS}}-{{member.RANKED.LOSSES}}</li>
+    		<li>{{member.RANKED.TIER}} {{member.RANKED.RANK}}           LP:{{member.RANKED.LP}}    [{{member.RANKED.WINS}}-{{member.RANKED.LOSSES}}]</li>
 
-            <li>Last Game: {{member.LAST.WON}} with <img src="https://ddragon.leagueoflegends.com/cdn/8.24.1/img/champion/{{member.LAST.CHAMP}}" width="30" height="30"> ({{member.LAST.LANE}}): {{member.LAST.KILLS}}/{{member.LAST.DEATHS}}/{{member.LAST.ASSISTS}}
+            <li>Last Game: {{member.LAST.WON}} with <img src="https://ddragon.leagueoflegends.com/cdn/9.11.1/img/champion/{{member.LAST.CHAMP}}" width="30" height="30"> ({{member.LAST.LANE}}): {{member.LAST.KILLS}}/{{member.LAST.DEATHS}}/{{member.LAST.ASSISTS}}
 
     	</ul>
     	{% endfor %}
@@ -87,11 +87,11 @@ body {
 <ol>
     	{% for member in TEAM2 %}
 
-        	<li>{{member.NAME}} - {{member.CHAMP}} - <img src="https://ddragon.leagueoflegends.com/cdn/8.24.1/img/spell/{{member.SPELL1}}" width="30" height="30"><img src="https://ddragon.leagueoflegends.com/cdn/8.24.1/img/spell/{{member.SPELL2}}" width="30" height="30"> </li>
+        	<li>{{member.NAME}} | {{member.CHAMP}} | <img src="https://ddragon.leagueoflegends.com/cdn/9.11.1/img/spell/{{member.SPELL1}}" width="30" height="30"><img src="https://ddragon.leagueoflegends.com/cdn/8.24.1/img/spell/{{member.SPELL2}}" width="30" height="30"> </li>
 
        	<ul>
-    		<li>{{member.RANKED.TIER}} {{member.RANKED.RANK}}           LP:{{member.RANKED.LP}}    {{member.RANKED.WINS}}-{{member.RANKED.LOSSES}}</li>
-            <li>Last Game: {{member.LAST.WON}} with <img src="https://ddragon.leagueoflegends.com/cdn/8.24.1/img/champion/{{member.LAST.CHAMP}}" width="30" height="30"> ({{member.LAST.LANE}}): {{member.LAST.KILLS}}/{{member.LAST.DEATHS}}/{{member.LAST.ASSISTS}}
+    		<li>{{member.RANKED.TIER}} {{member.RANKED.RANK}}           LP:{{member.RANKED.LP}}    [{{member.RANKED.WINS}}-{{member.RANKED.LOSSES}}]</li>
+            <li>Last Game: {{member.LAST.WON}} with <img src="https://ddragon.leagueoflegends.com/cdn/9.11.1/img/champion/{{member.LAST.CHAMP}}" width="30" height="30"> ({{member.LAST.LANE}}): {{member.LAST.KILLS}}/{{member.LAST.DEATHS}}/{{member.LAST.ASSISTS}}
                 
     	</ul>
     	{% endfor %}

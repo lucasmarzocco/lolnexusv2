@@ -5,7 +5,7 @@ spell_dict = {}
 
 def extractSpellsFromFile():
 
-	file = json.load(open("/Users/lucasmarzocco/Desktop/lolnexusv2/main_app/cached_spells.txt", "r"))
+	file = json.load(open("/Users/lmarzocc/Desktop/lolnexusv2/main_app/cached_spells.txt", "r"))
 
 	for item in file["data"]:
 

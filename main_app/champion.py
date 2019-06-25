@@ -5,7 +5,8 @@ champion_dict = {}
 
 def extractChampsFromFile():
 
-	file = json.load(open("/Users/lucasmarzocco/Desktop/lolnexusv2/main_app/cached_champs.txt", "r"))
+
+	file = json.load(open("/Users/lmarzocc/Desktop/lolnexusv2/main_app/cached_champs.txt", "r"))
 
 	for item in file["data"]:
 

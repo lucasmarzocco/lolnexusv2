@@ -10,8 +10,6 @@ import os
 from .champion import extractChampsFromFile
 from .spell import extractSpellsFromFile
 
-KEY_PHRASE = "?api_key=RGAPI-f7094294-8236-4b26-a369-09089e9fcf7d"
-STARTER = "https://na1.api.riotgames.com/"
 game_dict = {"RANKED_SOLO_5x5": "Solo/Duo", "RANKED_FLEX_SR": "Flex SR", "RANKED_FLEX_TT": "Flex TT"}
 game_modes = {400: "5v5 Draft", 420: "5v5 Ranked Solo/Duo", 430: "5v5 Blind", 440: "5v5 Ranked Flex", 450: "5v5 ARAM"}
 
@@ -46,9 +44,9 @@ def getData(url):
 	return content
 
 
-def returnRankedInfo(summonerId):
+def returnRankedInfo(summonerId, key, version):
 	return_string = ""
-	ranked_info = getData(STARTER + "lol/league/v3/positions/by-summoner/" + str(summonerId) + KEY_PHRASE)
+	ranked_info = getData("https://na1.api.riotgames.com/lol/league/" + version + "/positions/by-summoner/" + str(summonerId) + key)
 
 	for queue in json.loads(ranked_info):
 
@@ -57,15 +55,15 @@ def returnRankedInfo(summonerId):
 
 	return "Unranked"
 
-def getAccountID(summonerId):
+def getAccountID(summonerId, key, version):
 
-	summoner_info = json.loads(getData(STARTER + "lol/summoner/v3/summoners/" + str(summonerId) + KEY_PHRASE))
+	summoner_info = json.loads(getData("https://na1.api.riotgames.com/lol/summoner/" + version + "/summoners/" + str(summonerId) + key))
 	return summoner_info["accountId"]
 
 
-def returnLastGame(summonerId, champs):
+def returnLastGame(summonerId, champs, key, version):
 
-	match_game_info = json.loads(getData(STARTER + "lol/match/v3/matchlists/by-account/" + str(getAccountID(summonerId)) + KEY_PHRASE))
+	match_game_info = json.loads(getData("https://na1.api.riotgames.com/lol/match/" + version + "/matchlists/by-account/" + str(getAccountID(summonerId, key, version)) + key))
 
 	last_match = match_game_info["matches"][0]
 	lane = last_match["lane"]
@@ -73,13 +71,13 @@ def returnLastGame(summonerId, champs):
 	queue = last_match["queue"]
 	game_id = last_match["gameId"]
 
-	last_match_info = json.loads(getData(STARTER + "lol/match/v3/matches/" + str(game_id) + KEY_PHRASE))
+	last_match_info = json.loads(getData("https://na1.api.riotgames.com/lol/match/" + version + "/matches/" + str(game_id) + key))
 
 	position = 0
 	won = ""
 
 	for participant in last_match_info["participantIdentities"]:
-		if getAccountID(summonerId) == participant["player"]["accountId"]:
+		if getAccountID(summonerId, key, version) == participant["player"]["accountId"]:
 			position = participant["participantId"]
 
 
@@ -107,14 +105,22 @@ def main(summoner_name):
 	spells = extractSpellsFromFile()
 	champions = extractChampsFromFile()
 
+	KEY_PHRASE = ""
+	VERSION = ""
+
+	with open('/Users/lmarzocc/Desktop/lolnexusv2/main_app/config.json') as json_file:  
+		data = json.load(json_file)
+		KEY_PHRASE = data["API_KEY"]
+		VERSION = data["VERSION"]
+
 	banned_champs = []
 
-	user = json.loads(getData(STARTER + "lol/summoner/v3/summoners/by-name/" + summoner_name + KEY_PHRASE))
+	user = json.loads(getData("https://na1.api.riotgames.com/lol/summoner/" + VERSION + "/summoners/by-name/" + summoner_name + KEY_PHRASE))
 
 	if checkIfErrorCodesAreTrue(user)[0]:
 		return checkIfErrorCodesAreTrue(user)
 
-	game_data = json.loads(getData(STARTER + "lol/spectator/v3/active-games/by-summoner/" + str(user["id"]) + KEY_PHRASE))
+	game_data = json.loads(getData("https://na1.api.riotgames.com/lol/spectator/" + VERSION + "/active-games/by-summoner/" + str(user["id"]) + KEY_PHRASE))
 
 	if checkIfErrorCodesAreTrue(game_data)[0]:
 		return checkIfErrorCodesAreTrue(game_data)
@@ -132,8 +138,8 @@ def main(summoner_name):
 
 	for par in game_data["participants"]:
 
-		ranked_data = returnRankedInfo(par["summonerId"])
-		last_game = returnLastGame(par["summonerId"], champions)
+		ranked_data = returnRankedInfo(par["summonerId"], KEY_PHRASE, VERSION)
+		last_game = returnLastGame(par["summonerId"], champions, KEY_PHRASE, VERSION)
 
 		summoner = {"NAME": par["summonerName"], "CHAMP": champions[par["championId"]][0], "SPELL1": (spells[par["spell1Id"]])[1], "SPELL2": (spells[par["spell2Id"]])[1], "RANKED": ranked_data, "LAST": last_game}
 
